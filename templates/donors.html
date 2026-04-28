@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donors List | LifeLink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="/" class="text-2xl font-bold text-red-600">LifeLink</a>
+                <div class="space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-red-600 font-medium">Home</a>
+                    <a href="/register" class="text-gray-700 hover:text-red-600 font-medium">Become a Donor</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900">Registered Donors</h2>
+                <p class="mt-2 text-gray-600">Heroes ready to save lives.</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 mb-8">
+                <form action="/donors" method="GET" class="flex flex-col md:flex-row gap-4 items-end">
+                    <div class="flex-grow">
+                        <label for="blood_group" class="block text-sm font-medium text-gray-700 mb-1">Filter by Blood Group</label>
+                        <select id="blood_group" name="blood_group" class="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                            <option value="All" {% if selected_group == "All" or not selected_group %}selected{% endif %}>All Groups</option>
+                            <option value="A+" {% if selected_group == "A+" %}selected{% endif %}>A+</option>
+                            <option value="A-" {% if selected_group == "A-" %}selected{% endif %}>A-</option>
+                            <option value="B+" {% if selected_group == "B+" %}selected{% endif %}>B+</option>
+                            <option value="B-" {% if selected_group == "B-" %}selected{% endif %}>B-</option>
+                            <option value="AB+" {% if selected_group == "AB+" %}selected{% endif %}>AB+</option>
+                            <option value="AB-" {% if selected_group == "AB-" %}selected{% endif %}>AB-</option>
+                            <option value="O+" {% if selected_group == "O+" %}selected{% endif %}>O+</option>
+                            <option value="O-" {% if selected_group == "O-" %}selected{% endif %}>O-</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-red-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-red-700 transition shadow-lg w-full md:w-auto">
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Name</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Blood Group</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for donor in donors %}
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ donor.name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    {{ donor.blood_group }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ donor.phone }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="px-6 py-10 text-center text-gray-500">
+                                No donors found yet. <a href="/register" class="text-red-600 font-bold">Be the first!</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white py-8 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            &copy; 2026 LifeLink Blood Management.
+        </div>
+    </footer>
+</body>
+</html>
